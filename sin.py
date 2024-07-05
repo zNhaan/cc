@@ -56,12 +56,11 @@ while True:
       serial=[entry['serial'] for entry in kq['data']]
       tinh=int(math.sin(so[0])+math.sin(so[1])+math.sin(so[2])*100)
       tinh=int((so[0]+so[1]+so[2])/tinh*10)
+      tinh-=1
       if nguoc==1:
         tinh+=1
-      if tinh>80:
-        tinh-=80
-      if phut//10 in [0,2,4]:
-        tinh+=1
+      #if phut//10 in [0,2,4]:
+       # tinh+=1
       if tinh%2==0:
         cau='Even'
         cl='Chẵn'
