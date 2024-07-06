@@ -55,30 +55,25 @@ try:
         so=[entry['number'] for entry in kq['data']]
         result=[entry['result'] for entry in kq['data']]
         serial=[entry['serial'] for entry in kq['data']]
-        tinh=int(math.sin(so[0])+math.sin(so[1])+math.sin(so[2])*100)
-        tinh=int((so[0]+so[1]+so[2])/tinh*10)
-        tinh-=1
-        if nguoc==1:
-          tinh+=1
-        if phut//10 in [0,2,4]:
-          tinh+=1
+        tinh=math.sin(so[0])
+        tinh*=10**(len(str(tinh).replace('.',''))-1)
+        tinh=so[0]/tinh
+        tinh*=10**(len(str(tinh).replace('.',''))-1)
+        tinh=abs(tinh)
         if tinh>80:
           while True:
-            tinh-=80
-            if tinh<=80:
+            tinh/=so[0]
+            if int(tinh)<=80:
               break
-        if tinh<0:
-          tinh*=-1
-        if tinh==0:
-          tinh=2
+        tinh=int(tinh)
         if tinh%2==0:
           cau='Even'
           cl='Chẵn'
-          requests.get('https://api.telegram.org/bot7407325672:AAEEBeXZkgwwA57qDyYdgrt6OcoZY6VfEZY/sendMessage?chat_id=-4269359270&text=Mọi người! Hãy Đánh 𝘾𝙝ẵ𝙣 ('+str(tinh)+')')
+          requests.get('https://api.telegram.org/bot7407325672:AAEEBeXZkgwwA57qDyYdgrt6OcoZY6VfEZY/sendMessage?chat_id=-1002228172695&text=Mọi người! Hãy Đánh 𝘾𝙝ẵ𝙣 ('+str(tinh)+')')
         else:
           cau='Odd'
           cl='Lẻ'
-          requests.get('https://api.telegram.org/bot7407325672:AAEEBeXZkgwwA57qDyYdgrt6OcoZY6VfEZY/sendMessage?chat_id=-4269359270&text=Mọi người! Hãy Đánh 𝙇ẻ ('+str(tinh)+')')
+          requests.get('https://api.telegram.org/bot7407325672:AAEEBeXZkgwwA57qDyYdgrt6OcoZY6VfEZY/sendMessage?chat_id=-1002228172695&text=Mọi người! Hãy Đánh 𝙇ẻ ('+str(tinh)+')')
         print(f'{xnhac}{cau} ({cl})   |  {int(tinh)}     ({so[0]})    -({giayy}s + {nano})\n')
         if checkk!=landau:
           if kiemtra in result[0]:
@@ -87,8 +82,8 @@ try:
             print(f'{do}Lose: {lose}')
             if ccc=='cc':
               ccc=''
-            requests.get('https://api.telegram.org/bot7407325672:AAEEBeXZkgwwA57qDyYdgrt6OcoZY6VfEZY/sendMessage?chat_id=-4269359270&text=🏆Kết quả cầu trước: Thắng ✅')
-            requests.get('https://api.telegram.org/bot7407325672:AAEEBeXZkgwwA57qDyYdgrt6OcoZY6VfEZY/sendMessage?chat_id=-4269359270&text='+'🟢 Thắng: '+str(win)+'\n🔴 Thua: '+str(lose))
+            requests.get('https://api.telegram.org/bot7407325672:AAEEBeXZkgwwA57qDyYdgrt6OcoZY6VfEZY/sendMessage?chat_id=-1002228172695&text=🏆Kết quả cầu trước: Thắng ✅')
+            requests.get('https://api.telegram.org/bot7407325672:AAEEBeXZkgwwA57qDyYdgrt6OcoZY6VfEZY/sendMessage?chat_id=-1002228172695&text='+'🟢 Thắng: '+str(win)+'\n🔴 Thua: '+str(lose))
           else:
             if nguoc==0:
               nguoc=1
@@ -99,16 +94,16 @@ try:
             print(f'{do}Lose: {lose}  (+1)')
             if ccc=='cc':
               ccc=''
-            requests.get('https://api.telegram.org/bot7407325672:AAEEBeXZkgwwA57qDyYdgrt6OcoZY6VfEZY/sendMessage?chat_id=-4269359270&text=🏆Kết quả cầu trước: Thua ⛔')
-            requests.get('https://api.telegram.org/bot7407325672:AAEEBeXZkgwwA57qDyYdgrt6OcoZY6VfEZY/sendMessage?chat_id=-4269359270&text='+'🟢 Thắng: '+str(win)+'\n🔴 Thua: '+str(lose))
+            requests.get('https://api.telegram.org/bot7407325672:AAEEBeXZkgwwA57qDyYdgrt6OcoZY6VfEZY/sendMessage?chat_id=-1002228172695&text=🏆Kết quả cầu trước: Thua ⛔')
+            requests.get('https://api.telegram.org/bot7407325672:AAEEBeXZkgwwA57qDyYdgrt6OcoZY6VfEZY/sendMessage?chat_id=-1002228172695&text='+'🟢 Thắng: '+str(win)+'\n🔴 Thua: '+str(lose))
         kiemtra=cau
         print('\n')
         checkk=check
-        requests.get('https://api.telegram.org/bot7407325672:AAEEBeXZkgwwA57qDyYdgrt6OcoZY6VfEZY/sendMessage?chat_id=-4269359270&text=================================')
+        requests.get('https://api.telegram.org/bot7407325672:AAEEBeXZkgwwA57qDyYdgrt6OcoZY6VfEZY/sendMessage?chat_id=-1002228172695&text=================================')
     else:
       sleep(0.5)
       if stop==1:
         stop=0
       print(f'\r{vang}--- {gio}  :  {phut}  :  {giay} ---',end='')
 except:
-  requests.get('https://api.telegram.org/bot7407325672:AAEEBeXZkgwwA57qDyYdgrt6OcoZY6VfEZY/sendMessage?chat_id=-4269359270&text=❗❗❗Admin Đã Dừng Bot❗❗❗')
+  requests.get('https://api.telegram.org/bot7407325672:AAEEBeXZkgwwA57qDyYdgrt6OcoZY6VfEZY/sendMessage?chat_id=-1002228172695&text=👉Admin Đã Dừng Bot👈')
