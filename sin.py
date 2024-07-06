@@ -46,6 +46,7 @@ try:
         os.system('clear')
         stop=1
         while True:
+          sleep(0.5)
           check=requests.get('https://api.im2018.com/api/game/guess_Odd?page=1&limit=50&type=24').text
           if check!=checkk:
             giayy=datetime.datetime.now().second
@@ -55,17 +56,33 @@ try:
         so=[entry['number'] for entry in kq['data']]
         result=[entry['result'] for entry in kq['data']]
         serial=[entry['serial'] for entry in kq['data']]
-        tinh=math.sin(so[0])
-        tinh*=10**(len(str(tinh).replace('.',''))-1)
-        tinh=so[0]/tinh
-        tinh*=10**(len(str(tinh).replace('.',''))-1)
-        tinh=abs(tinh)
+        tinh=0
+        for i in so:
+          tinh+=i
         if tinh>80:
           while True:
-            tinh/=so[0]
-            if int(tinh)<=80:
+            tinh//=so[0]
+            if tinh<=80:
               break
-        tinh=int(tinh)
+        tinh+=1
+        if checkk!=landau:
+          if kiemtra in result[0]:
+            win+=1
+            print(f'{xanhla}Win: {win}  (+1)')
+            print(f'{do}Lose: {lose}')
+            if ccc=='cc':
+              ccc=''
+            requests.get('https://api.telegram.org/bot7407325672:AAEEBeXZkgwwA57qDyYdgrt6OcoZY6VfEZY/sendMessage?chat_id=-1002228172695&text=🏆Kết quả: Thắng ✅')
+            requests.get('https://api.telegram.org/bot7407325672:AAEEBeXZkgwwA57qDyYdgrt6OcoZY6VfEZY/sendMessage?chat_id=-1002228172695&text='+'🟢 Thắng: '+str(win)+'\n🔴 Thua: '+str(lose))
+          else:
+            lose+=1
+            print(f'{xanhla}Win:  {win}')
+            print(f'{do}Lose: {lose}  (+1)')
+            if ccc=='cc':
+              ccc=''
+            requests.get('https://api.telegram.org/bot7407325672:AAEEBeXZkgwwA57qDyYdgrt6OcoZY6VfEZY/sendMessage?chat_id=-1002228172695&text=🏆Kết quả: Thua ⛔')
+            requests.get('https://api.telegram.org/bot7407325672:AAEEBeXZkgwwA57qDyYdgrt6OcoZY6VfEZY/sendMessage?chat_id=-1002228172695&text='+'🟢 Thắng: '+str(win)+'\n🔴 Thua: '+str(lose))
+          requests.get('https://api.telegram.org/bot7407325672:AAEEBeXZkgwwA57qDyYdgrt6OcoZY6VfEZY/sendMessage?chat_id=-1002228172695&text=================================')
         if tinh%2==0:
           cau='Even'
           cl='Chẵn'
@@ -75,31 +92,9 @@ try:
           cl='Lẻ'
           requests.get('https://api.telegram.org/bot7407325672:AAEEBeXZkgwwA57qDyYdgrt6OcoZY6VfEZY/sendMessage?chat_id=-1002228172695&text=Mọi người! Hãy Đánh 𝙇ẻ ('+str(tinh)+')')
         print(f'{xnhac}{cau} ({cl})   |  {int(tinh)}     ({so[0]})    -({giayy}s + {nano})\n')
-        if checkk!=landau:
-          if kiemtra in result[0]:
-            win+=1
-            print(f'{xanhla}Win: {win}  (+1)')
-            print(f'{do}Lose: {lose}')
-            if ccc=='cc':
-              ccc=''
-            requests.get('https://api.telegram.org/bot7407325672:AAEEBeXZkgwwA57qDyYdgrt6OcoZY6VfEZY/sendMessage?chat_id=-1002228172695&text=🏆Kết quả cầu trước: Thắng ✅')
-            requests.get('https://api.telegram.org/bot7407325672:AAEEBeXZkgwwA57qDyYdgrt6OcoZY6VfEZY/sendMessage?chat_id=-1002228172695&text='+'🟢 Thắng: '+str(win)+'\n🔴 Thua: '+str(lose))
-          else:
-            if nguoc==0:
-              nguoc=1
-            else:
-              nguoc=0
-            lose+=1
-            print(f'{xanhla}Win:  {win}')
-            print(f'{do}Lose: {lose}  (+1)')
-            if ccc=='cc':
-              ccc=''
-            requests.get('https://api.telegram.org/bot7407325672:AAEEBeXZkgwwA57qDyYdgrt6OcoZY6VfEZY/sendMessage?chat_id=-1002228172695&text=🏆Kết quả cầu trước: Thua ⛔')
-            requests.get('https://api.telegram.org/bot7407325672:AAEEBeXZkgwwA57qDyYdgrt6OcoZY6VfEZY/sendMessage?chat_id=-1002228172695&text='+'🟢 Thắng: '+str(win)+'\n🔴 Thua: '+str(lose))
         kiemtra=cau
         print('\n')
         checkk=check
-        requests.get('https://api.telegram.org/bot7407325672:AAEEBeXZkgwwA57qDyYdgrt6OcoZY6VfEZY/sendMessage?chat_id=-1002228172695&text=================================')
     else:
       sleep(0.5)
       if stop==1:
