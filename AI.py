@@ -74,35 +74,29 @@ while True:
         result=[entry['result'] for entry in kq['data']]
         so=[entry['number'] for entry in kq['data']]
         import numpy as np
-        from tensorflow.keras.models import Sequential
-        from tensorflow.keras.layers import LSTM, Dense
+        from sklearn.ensemble import RandomForestClassifier
         
         # List kết quả trước
-        results = [entry['result_value'] for entry in kq['data']]
+        results =[entry['result_value'] for entry in kq['data']]
         
-        # Chuyển đổi list kết quả thành dữ liệu huấn luyện cho mô hình
+        # Chuyển đổi list kết quả thành dữ liệu huấn luyện
         X = []
         y = []
         for i in range(2, len(results)):
-            X.append(results[i-2:i])
+            X.append([results[i-2], results[i-1]])
             y.append(results[i])
         
         X = np.array(X)
         y = np.array(y)
         
-        # Xây dựng mô hình LSTM đơn giản
-        model = Sequential()
-        model.add(LSTM(10, input_shape=(2,1)))
-        model.add(Dense(1, activation='sigmoid'))
-        
-        model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
-        model.fit(X.reshape(-1, 2, 1), y, epochs=100, batch_size=1, verbose=0)
+        # Xây dựng và huấn luyện mô hình Random Forest
+        model = RandomForestClassifier(n_estimators=100, random_state=42)
+        model.fit(X, y)
         
         # Dự đoán kết quả tiếp theo
-        next_input = np.array([[results[-2], results[-1]]])
-        tinh = model.predict(next_input.reshape(1, 2, 1))[0][0]
-        
-        
+        next_input = np.array([results[-2], results[-1]]).reshape(1, -1)
+        tinh = model.predict(next_input)
+
         if checkk!=landau:
           if kiemtra in result[0]:
             win+=1
