@@ -2,7 +2,7 @@
   
   
   
-url='https://api.im2018.com/api/game/guess_Odd?page=1&limit=80&type=24'
+url=f'https://api.im2018.com/api/game/guess_Odd?page=1&limit={720*7}&type=24'
   
 import os, requests, json, datetime, math, random
 from time import sleep
@@ -73,30 +73,35 @@ while True:
         kq=json.loads(check)
         result=[entry['result'] for entry in kq['data']]
         so=[entry['number'] for entry in kq['data']]
-        import numpy as np
-        from sklearn.ensemble import RandomForestClassifier
-        
-        # List kết quả trước
-        results =[entry['result_value'] for entry in kq['data']]
-        
-        # Chuyển đổi list kết quả thành dữ liệu huấn luyện
-        X = []
-        y = []
-        for i in range(2, len(results)):
-            X.append([results[i-2], results[i-1]])
-            y.append(results[i])
-        
-        X = np.array(X)
-        y = np.array(y)
-        
-        # Xây dựng và huấn luyện mô hình Random Forest
-        model = RandomForestClassifier(n_estimators=100, random_state=42)
-        model.fit(X, y)
-        
-        # Dự đoán kết quả tiếp theo
-        next_input = np.array([results[-2], results[-1]]).reshape(1, -1)
-        tinh = model.predict(next_input)
+        from collections import defaultdict
 
+        class MarkovChain:
+            def __init__(self, data):
+                self.transition_matrix = defaultdict(list)
+                self.start_state = None
+                self.build_transition_matrix(data)
+                
+            def build_transition_matrix(self, data):
+                self.start_state = data[0]
+                for i in range(len(data)-1):
+                    curr_state = data[i]
+                    next_state = data[i+1]
+                    self.transition_matrix[curr_state].append(next_state)
+            
+            def predict_next_state(self, current_state):
+                next_states = self.transition_matrix[current_state]
+                return random.choice(next_states)
+        
+        # Dữ liệu số nguyên từ 1 đến 80
+        data = [entry['number'] for entry in kq['data']]  # Thêm dữ liệu các số tiếp theo ở đây
+        
+        # Xây dựng mô hình Markov Chain từ dữ liệu
+        model = MarkovChain(data)
+        
+        # Dự đoán kết quả tiếp theo dựa trên kết quả mới nhất
+        current_state = data[0]  # Chọn số đầu tiên trong dữ liệu làm kết quả hiện tại
+        tinh = model.predict_next_state(current_state)
+        tinh+=1
         if checkk!=landau:
           if kiemtra in result[0]:
             win+=1
