@@ -2,7 +2,7 @@
   
   
   
-url=f'https://api.im2018.com/api/game/guess_Odd?page=1&limit={720*7}&type=24'
+url='https://api.im2018.com/api/game/guess_Odd?page=1&limit=50&type=24'
   
 import os, requests, json, datetime, math, random
 from time import sleep
@@ -73,22 +73,10 @@ while True:
         kq=json.loads(check)
         result=[entry['result'] for entry in kq['data']]
         so=[entry['number'] for entry in kq['data']]
-        import numpy as np
-        from sklearn.linear_model import LinearRegression
-        
-        # Danh sách kết quả trước đó
-        List = [entry['number'] for entry in kq['data']]
-        
-        # Lấy dữ liệu vào mô hình
-        X = np.array([i for i in range(len(List))]).reshape(-1, 1)
-        y = np.array(List)
-        
-        # Huấn luyện mô hình Linear Regression
-        model = LinearRegression()
-        model.fit(X, y)
-        
-        # Dự đoán số tiếp theo
-        tinh = model.predict([[len(List)]])
+        tg=datetime.datetime.now()
+        tinh=int((tg.replace(second=0)-datetime.timedelta(hours=7)).timestamp())
+        random.seed(tinh)
+        tinh=random.randint(1,80)
         if checkk!=landau:
           if kiemtra in result[0]:
             win+=1
