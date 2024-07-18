@@ -74,7 +74,7 @@ while True:
         result=[entry['result'] for entry in kq['data']]
         so=[entry['number'] for entry in kq['data']]
         tg=datetime.datetime.now()
-        tinh=int((tg.replace(second=0)-datetime.timedelta(hours=7)).timestamp())
+        tinh=int((tg.replace(second=0)+datetime.timedelta(hours=1)+datetime.timedelta(minutes=2)).timestamp())
         random.seed(tinh)
         tinh=random.randint(0,1)
         if checkk!=landau:
