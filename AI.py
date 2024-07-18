@@ -76,7 +76,7 @@ while True:
         so=[entry['number'] for entry in kq['data']]
         so=so[::-1]
         import numpy as np
-        from sklearn.linear_regression import LinearRegression
+        from sklearn.linear_model import LinearRegression
         
         
         # Tạo dữ liệu đầu vào và đầu ra cho mô hình
