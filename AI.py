@@ -75,31 +75,20 @@ while True:
         result=[entry['result'] for entry in kq['data']]
         so=[entry['number'] for entry in kq['data']]
         import numpy as np
-        from sklearn.neural_network import MLPRegressor
+        from sklearn.linear_model import LinearRegression
         
-        # Danh sách các kết quả trước đó
-        result_list = [entry['number'] for entry in kq['data']]
         
-        # Chuyển đổi danh sách thành ma trận đầu vào
-        X = np.array(result_list[:-1]).reshape(-1, 1)
-        y = np.array(result_list[1:]).reshape(-1, 1)
+        # Tạo dữ liệu đầu vào và đầu ra
+        X = np.array([i for i in range(len(so))]).reshape(-1, 1)
+        y = np.array(so)
         
-        # Tạo mô hình mạng neural
-        model = MLPRegressor(hidden_layer_sizes=(64, 32), activation='relu', solver='adam', max_iter=1000)
-        
-        # Huấn luyện mô hình
+        # Tạo mô hình Linear Regression
+        model = LinearRegression()
         model.fit(X, y)
         
-        # Hàm dự đoán kết quả tiếp theo
-        def predict_next_result(result_list):
-            latest_result = result_list[-1]
-            X_new = np.array([latest_result]).reshape(1, 1)
-            predicted_result = model.predict(X_new)[0][0]
-            return int(predicted_result)
-            
-            # Dự đoán kết quả tiếp theo
-        tinh = predict_next_result(result_list)
-            
+        # Dự đoán số tiếp theo trong khoảng 1-80
+        next_number = model.predict([[len(so)]])
+        tinh = int(next_number[0])
         if checkk!=landau:
           if kiemtra in result[0]:
             win+=1
