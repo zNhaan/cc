@@ -77,6 +77,7 @@ while True:
         so=so[::-1]
         import numpy as np
         from sklearn.linear_model import LinearRegression
+        model = LinearRegression()
         
         
         # Tạo dữ liệu đầu vào và đầu ra cho mô hình
