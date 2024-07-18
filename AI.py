@@ -2,7 +2,7 @@
   
   
   
-url=f'https://api.im2018.com/api/game/guess_Odd?page=1&limit={50000}&type=24'
+url=f'https://api.im2018.com/api/game/guess_Odd?page=1&limit={50}&type=24'
   
 import os, requests, json, datetime, math, random
 from time import sleep
