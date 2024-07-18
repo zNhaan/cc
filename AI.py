@@ -2,10 +2,11 @@
   
   
   
-url=f'https://api.im2018.com/api/game/guess_Odd?page=1&limit={720*7}&type=24'
+url=f'https://api.im2018.com/api/game/guess_Odd?page=1&limit={60}&type=24'
   
 import os, requests, json, datetime, math, random
 from time import sleep
+os.system('pip install numpy && pip install scikit-learn')
 ccc='cc'
 kiemtra=''
 win=lose=0
@@ -73,35 +74,32 @@ while True:
         kq=json.loads(check)
         result=[entry['result'] for entry in kq['data']]
         so=[entry['number'] for entry in kq['data']]
-        from collections import defaultdict
-
-        class MarkovChain:
-            def __init__(self, data):
-                self.transition_matrix = defaultdict(list)
-                self.start_state = None
-                self.build_transition_matrix(data)
-                
-            def build_transition_matrix(self, data):
-                self.start_state = data[0]
-                for i in range(len(data)-1):
-                    curr_state = data[i]
-                    next_state = data[i+1]
-                    self.transition_matrix[curr_state].append(next_state)
+        import numpy as np
+        from sklearn.neural_network import MLPRegressor
+        
+        # Danh sách các kết quả trước đó
+        result_list = [entry['number'] for entry in kq['data']]
+        
+        # Chuyển đổi danh sách thành ma trận đầu vào
+        X = np.array(result_list[:-1]).reshape(-1, 1)
+        y = np.array(result_list[1:]).reshape(-1, 1)
+        
+        # Tạo mô hình mạng neural
+        model = MLPRegressor(hidden_layer_sizes=(64, 32), activation='relu', solver='adam', max_iter=1000)
+        
+        # Huấn luyện mô hình
+        model.fit(X, y)
+        
+        # Hàm dự đoán kết quả tiếp theo
+        def predict_next_result(result_list):
+            latest_result = result_list[-1]
+            X_new = np.array([latest_result]).reshape(1, 1)
+            predicted_result = model.predict(X_new)[0][0]
+            return int(predicted_result)
             
-            def predict_next_state(self, current_state):
-                next_states = self.transition_matrix[current_state]
-                return random.choice(next_states)
-        
-        # Dữ liệu số nguyên từ 1 đến 80
-        data = [entry['number'] for entry in kq['data']]  # Thêm dữ liệu các số tiếp theo ở đây
-        
-        # Xây dựng mô hình Markov Chain từ dữ liệu
-        model = MarkovChain(data)
-        
-        # Dự đoán kết quả tiếp theo dựa trên kết quả mới nhất
-        current_state = data[0]  # Chọn số đầu tiên trong dữ liệu làm kết quả hiện tại
-        tinh = model.predict_next_state(current_state)
-        tinh+=1
+            # Dự đoán kết quả tiếp theo
+        tinh = predict_next_result(result_list)
+            
         if checkk!=landau:
           if kiemtra in result[0]:
             win+=1
