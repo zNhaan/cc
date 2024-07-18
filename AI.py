@@ -2,11 +2,11 @@
   
   
   
-url=f'https://api.im2018.com/api/game/guess_Odd?page=1&limit={180}&type=24'
+url=f'https://api.im2018.com/api/game/guess_Odd?page=1&limit={50000}&type=24'
   
 import os, requests, json, datetime, math, random
 from time import sleep
-os.system('pip install numpy && pip install tensorflow && pip install tensorflow-gpu')
+os.system('pip install numpy && pip install scikit-learn')
 ccc='cc'
 kiemtra=''
 win=lose=0
@@ -74,30 +74,23 @@ while True:
         kq=json.loads(check)
         result=[entry['result'] for entry in kq['data']]
         so=[entry['number'] for entry in kq['data']]
+        so=so[::-1]
         import numpy as np
-        from tensorflow.keras.models import Sequential
-        from tensorflow.keras.layers import Dense, Activation
+        from sklearn.linear_regression import LinearRegression
         
-        # Dữ liệu đầu vào
         
-        # Chuyển đổi dữ liệu thành định dạng phù hợp với mô hình
-        X = np.array([so[i-1] for i in range(1, len(so))])
-        y = np.array([so[i] for i in range(1, len(so))])
+        # Tạo dữ liệu đầu vào và đầu ra cho mô hình
+        X = np.arange(1, len(so)+1).reshape(-1, 1) # Các giá trị từ 1 đến 12
+        y = np.array(so)
         
-        # Thiết lập mô hình
-        model = Sequential()
-        model.add(Dense(8, input_dim=1, activation='relu'))
-        model.add(Dense(1, activation='sigmoid'))
+        # Khởi tạo và huấn luyện mô hình Linear Regression
+        model = LinearRegression()
+        model.fit(X, y)
         
-        # Biên dịch mô hình
-        model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
+        # Dự đoán các giá trị từ 1 đến 80
+        X_pred = np.arange(1, 81).reshape(-1, 1)
+        tinh = model.predict(X_pred)
         
-        # Huấn luyện mô hình
-        model.fit(X, y, epochs=100, batch_size=1)
-        
-        # Dự đoán số tiếp theo
-        next_number = model.predict(np.array([so[-1]]))
-        tinh=round(next_number[0][0])
         if checkk!=landau:
           if kiemtra in result[0]:
             win+=1
