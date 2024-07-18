@@ -2,7 +2,7 @@
   
   
   
-url=f'https://api.im2018.com/api/game/guess_Odd?page=1&limit={50}&type=24'
+url=f'https://api.im2018.com/api/game/guess_Odd?page=1&limit={180}&type=24'
   
 import os, requests, json, datetime, math, random
 from time import sleep
@@ -73,7 +73,7 @@ while True:
             break
         kq=json.loads(check)
         result=[entry['result'] for entry in kq['data']]
-        so=[entry['result_value'] for entry in kq['data']]
+        so=[entry['number'] for entry in kq['data']]
         import numpy as np
         from tensorflow.keras.models import Sequential
         from tensorflow.keras.layers import Dense, Activation
