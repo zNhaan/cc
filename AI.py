@@ -77,11 +77,12 @@ while True:
         so=so[::-1]
         import numpy as np
         from sklearn.linear_model import LinearRegression
-        model = LinearRegression()
         
+        # Giả sử so là một list chứa 500 giá trị
+         # 500 giá trị
         
         # Tạo dữ liệu đầu vào và đầu ra cho mô hình
-        X = np.arange(1, len(so)+1).reshape(-1, 1) # Các giá trị từ 1 đến 12
+        X = np.arange(1, len(so)+1).reshape(-1, 1) # Các giá trị từ 1 đến 500
         y = np.array(so)
         
         # Khởi tạo và huấn luyện mô hình Linear Regression
@@ -91,6 +92,7 @@ while True:
         # Dự đoán các giá trị từ 1 đến 80
         X_pred = np.arange(1, 81).reshape(-1, 1)
         tinh = model.predict(X_pred)
+        
         
         if checkk!=landau:
           if kiemtra in result[0]:
