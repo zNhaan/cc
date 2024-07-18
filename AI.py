@@ -6,7 +6,7 @@ url=f'https://api.im2018.com/api/game/guess_Odd?page=1&limit={50000}&type=24'
   
 import os, requests, json, datetime, math, random
 from time import sleep
-os.system('pip install numpy && pip install tensorflow')
+os.system('pip install numpy && pip install tensorflow && pip install tensorflow-gpu')
 ccc='cc'
 kiemtra=''
 win=lose=0
