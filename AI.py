@@ -91,7 +91,7 @@ while True:
         
         # Dự đoán các giá trị từ 1 đến 80
         X_pred = np.arange(1, 81).reshape(-1, 1)
-        tinh = model.predict(X_pred)
+        tinh = int(model.predict(X_pred))
         
         
         if checkk!=landau:
