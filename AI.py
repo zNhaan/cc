@@ -74,23 +74,22 @@ while True:
         kq=json.loads(check)
         result=[entry['result'] for entry in kq['data']]
         so=[entry['number'] for entry in kq['data']]
-        numbers=so[::-1]
+        so=so[::-1]
         import numpy as np
         from sklearn.linear_model import LinearRegression
+
         
-        # Tạo dữ liệu mẫu
+        # Dự đoán kết quả tiếp theo
+        X = np.array([i for i in range(len(so))]).reshape(-1, 1)
+        y = np.array(so)
         
-        # Chuyển danh sách số thành dạng ma trận
-        X = np.array([numbers[:-1]]).T
-        y = np.array([numbers[1:]])
-        
-        # Tạo mô hình Linear Regression
         model = LinearRegression()
         model.fit(X, y)
         
-        # Dự đoán số tiếp theo
-        next_number = model.predict([[numbers[-1]]])
-        tinh = int(next_number[0])
+        tinh = int(model.predict([[len(so)]])[0])
+        
+        print(f"Kết quả dự đoán: {tinh}")
+        
         if checkk!=landau:
           if kiemtra in result[0]:
             win+=1
