@@ -77,6 +77,8 @@ while True:
         tinh=int((tg.replace(second=0)+datetime.timedelta(hours=1)+datetime.timedelta(minutes=2)).timestamp())
         random.seed(tinh)
         tinh=random.randint(1,80)
+        if gio in [12,14,16,18,20,22,0,2,4,6,8,10]:
+          tinh+=1
         if checkk!=landau:
           if kiemtra in result[0]:
             win+=1
