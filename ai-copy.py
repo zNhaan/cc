@@ -76,7 +76,7 @@ while True:
         tg=datetime.datetime.now()
         tinh=int((tg.replace(second=0)+datetime.timedelta(hours=1)+datetime.timedelta(minutes=2)).timestamp())
         random.seed(tinh)
-        tinh=random.randint(0,1)
+        tinh=random.randint(1,80)
         if checkk!=landau:
           if kiemtra in result[0]:
             win+=1
